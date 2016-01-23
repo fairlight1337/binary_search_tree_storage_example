@@ -236,4 +236,22 @@ namespace bsts {
     
     return unLargest;
   }
+  
+  bool BinarySearchTree::isBinarySearchTree() {
+    bool bResult = true;
+    
+    if(this->left()) {
+      if(!(this->left()->key() < this->key())) {
+	bResult = false;
+      }
+    }
+    
+    if(this->right()) {
+      if(!(this->right()->key() > this->key())) {
+	bResult = false;
+      }
+    }
+    
+    return bResult;
+  }
 }

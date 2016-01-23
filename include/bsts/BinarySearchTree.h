@@ -66,6 +66,8 @@ namespace bsts {
     
     unsigned int nthLargest(unsigned int unN);
     unsigned int nthLargest(unsigned int unN, unsigned int& unOffset);
+    
+    bool isBinarySearchTree();
   };
 }
 
