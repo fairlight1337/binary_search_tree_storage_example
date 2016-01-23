@@ -79,6 +79,9 @@ int main(int argc, char** argv) {
     std::cout << bstReconstructed->print() << std::endl;
     std::cout << "Depth: " << bstReconstructed->depth() << std::endl;
     std::cout << "Count: " << bstReconstructed->count() << std::endl;
+    
+    unsigned int unNthLargestN = rand() % bstReconstructed->count() + 1;
+    std::cout << unNthLargestN << (unNthLargestN == 1 ? "st" : (unNthLargestN == 2 ? "nd" : (unNthLargestN == 3 ? "rd" : "th"))) << " largest key: " << bstReconstructed->nthLargest(unNthLargestN - 1) << std::endl;
   } else {
     std::cerr << "Usage: " << argv[0] << " [max depth (integer)]" << std::endl;
     nReturnvalue = EXIT_FAILURE;

@@ -200,4 +200,38 @@ namespace bsts {
       }
     }
   }
+  
+  unsigned int BinarySearchTree::nthLargest(unsigned int unN) {
+    unsigned int unOffset = 0;
+    
+    return this->nthLargest(unN, unOffset);
+  }
+  
+  unsigned int BinarySearchTree::nthLargest(unsigned int unN, unsigned int& unOffset) {
+    unsigned int unLargest = 0;
+    
+    if(unOffset == unN) {
+      unLargest = this->key();
+    } else {
+      if(this->right()) {
+	unLargest = this->right()->nthLargest(unN, unOffset);
+	unOffset++;
+      }
+      
+      if(unOffset == unN) {
+	unLargest = this->key();
+      } else {
+	if(this->left()) {
+	  unOffset++;
+	  unLargest = this->left()->nthLargest(unN, unOffset);
+	}
+	
+	if(unOffset == unN) {
+	  unLargest = this->key();
+	}
+      }
+    }
+    
+    return unLargest;
+  }
 }

@@ -63,6 +63,9 @@ namespace bsts {
     
     std::vector<unsigned int> toArray();
     void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch = true, std::shared_ptr<BinarySearchTree> bstParent = NULL, unsigned int unLargestParentKey = 0, bool bEverBranchedLeft = false);
+    
+    unsigned int nthLargest(unsigned int unN);
+    unsigned int nthLargest(unsigned int unN, unsigned int& unOffset);
   };
 }
 
