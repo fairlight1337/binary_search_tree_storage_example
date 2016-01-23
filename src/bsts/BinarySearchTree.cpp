@@ -208,6 +208,8 @@ namespace bsts {
   }
   
   unsigned int BinarySearchTree::nthLargest(unsigned int unN, unsigned int& unOffset) {
+    // TODO(winkler): Buggy; doesn't return the right values.
+    
     unsigned int unLargest = 0;
     
     if(unOffset == unN) {
