@@ -38,6 +38,7 @@ namespace bsts {
     std::shared_ptr<BinaryTree> m_arrbtChildren[2];
     
   protected:
+    virtual std::shared_ptr<BinaryTree> instantiateChild();
     std::shared_ptr<BinaryTree> child(unsigned int unIndex, bool bCreateIfNonExistant = false);
     void setChild(unsigned int unIndex, std::shared_ptr<BinaryTree> btSet);
     
@@ -61,6 +62,8 @@ namespace bsts {
     
     unsigned int nthLargest(unsigned int unN);
     unsigned int nthLargest(unsigned int unN, unsigned int& unOffset);
+    
+    bool equal(std::shared_ptr<BinaryTree> btCompare);
   };
 }
 

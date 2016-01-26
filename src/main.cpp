@@ -89,5 +89,20 @@ int main(int argc, char** argv) {
     nReturnvalue = EXIT_FAILURE;
   }
   
+  std::shared_ptr<bsts::BinaryTree> btCmp1 = std::make_shared<bsts::BinaryTree>(1);
+  btCmp1->left(true)->setKey(2);
+  btCmp1->right(true)->setKey(3);
+  
+  std::shared_ptr<bsts::BinaryTree> btCmp2 = std::make_shared<bsts::BinaryTree>(1);
+  btCmp2->left(true)->setKey(2);
+  btCmp2->right(true)->setKey(3);
+  
+  std::cout << std::endl;
+  std::cout << "Comparing trees:" << std::endl;
+  btCmp1->print();
+  btCmp2->print();
+  
+  std::cout << "Trees equal: " << (btCmp1->equal(btCmp2) ? "yes" : "no") << std::endl;
+  
   return nReturnvalue;
 }

@@ -30,10 +30,14 @@ namespace bsts {
   BinaryTree::~BinaryTree() {
   }
   
+  std::shared_ptr<BinaryTree> BinaryTree::instantiateChild() {
+    return std::make_shared<BinaryTree>();
+  }
+  
   std::shared_ptr<BinaryTree> BinaryTree::child(unsigned int unIndex, bool bCreateIfNonExistant) {
     if(unIndex >= 0 && unIndex < 2) {
       if(!m_arrbtChildren[unIndex] && bCreateIfNonExistant) {
-	m_arrbtChildren[unIndex] = std::make_shared<BinaryTree>();
+	m_arrbtChildren[unIndex] = this->instantiateChild();
       }
     
       return m_arrbtChildren[unIndex];
@@ -149,5 +153,20 @@ namespace bsts {
     }
     
     return unLargest;
+  }
+  
+  bool BinaryTree::equal(std::shared_ptr<BinaryTree> btCompare) {
+    bool bEqual = false;
+    
+    if(this->key() == btCompare->key()) {
+      if(((!this->left() && !btCompare->left()) ||
+	  (this->left() && btCompare->left() && this->left()->equal(btCompare->left()))) &&
+	 ((!this->right() && !btCompare->right()) ||
+	  (this->right() && btCompare->right() && this->right()->equal(btCompare->right())))) {
+	bEqual = true;
+      }
+    }
+    
+    return bEqual;
   }
 }

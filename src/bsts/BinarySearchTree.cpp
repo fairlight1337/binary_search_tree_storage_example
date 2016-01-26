@@ -30,6 +30,10 @@ namespace bsts {
   BinarySearchTree::~BinarySearchTree() {
   }
   
+  std::shared_ptr<BinaryTree> BinarySearchTree::instantiateChild() {
+    return std::dynamic_pointer_cast<BinaryTree>(std::make_shared<BinarySearchTree>());
+  }
+  
   std::shared_ptr<BinarySearchTree> BinarySearchTree::randomTree(std::shared_ptr<BinarySearchTree> bstParent, int nMaxDepth, unsigned int unMinKeyValue, unsigned int unMaxKeyValue) {
     std::shared_ptr<BinarySearchTree> bstRandom = NULL;
     
@@ -97,13 +101,9 @@ namespace bsts {
   }
   
   void BinarySearchTree::fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch, std::shared_ptr<BinaryTree> btParent, unsigned int unSmallestParentKey, bool bEverBranchedLeft) {
-    this->fromArray(vecArray, bLeftBranch, std::dynamic_pointer_cast<BinarySearchTree>(btParent), unSmallestParentKey, bEverBranchedLeft);
-  }
-  
-  void BinarySearchTree::fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch, std::shared_ptr<BinarySearchTree> bstParent, unsigned int unSmallestParentKey, bool bEverBranchedLeft) {
-    if(bstParent && bLeftBranch) {
-      unSmallestParentKey = std::min(unSmallestParentKey, bstParent->key());
-    } else if(!bstParent) {
+    if(btParent && bLeftBranch) {
+      unSmallestParentKey = std::min(unSmallestParentKey, btParent->key());
+    } else if(!btParent) {
       unSmallestParentKey = 0;
       
       for(unsigned int unI : vecArray) {
@@ -119,7 +119,6 @@ namespace bsts {
     for(unsigned int unI = 1; unI < vecArray.size(); unI++) {
       if(vecArray[unI] < this->key()) {
 	std::vector<unsigned int> vecArrayCopy(vecArray.begin() + unI, vecArray.end());
-	
 	this->left(true)->fromArray(vecArrayCopy, true, this->shared_from_this(), unSmallestParentKey, true);
 	
 	break;
@@ -128,7 +127,7 @@ namespace bsts {
     
     // Find next right (next bigger key than this, no larger than smallest parent key when last branching left, smaller than parent if in parent's left branch)
     for(unsigned int unI = 1; unI < vecArray.size(); unI++) {
-      bool bSmallerThanParentOK = (bstParent ? vecArray[unI] < bstParent->key() : true);
+      bool bSmallerThanParentOK = (btParent ? vecArray[unI] < btParent->key() : true);
       bool bNoLargerThanLastLeftBranchParent = (bEverBranchedLeft ? vecArray[unI] < unSmallestParentKey : true);
       
       if(vecArray[unI] > this->key() && (!bLeftBranch || (bLeftBranch && bSmallerThanParentOK)) && bNoLargerThanLastLeftBranchParent) {

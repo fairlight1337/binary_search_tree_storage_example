@@ -37,6 +37,8 @@ namespace bsts {
   class BinarySearchTree : public BinaryTree {
   private:
   protected:
+    std::shared_ptr<BinaryTree> instantiateChild() override;
+    
   public:
     BinarySearchTree(unsigned int unKey = 0);
     ~BinarySearchTree();
@@ -44,8 +46,7 @@ namespace bsts {
     static std::shared_ptr<BinarySearchTree> randomTree(std::shared_ptr<BinarySearchTree> bstParent = NULL, int nMaxDepth = 3, unsigned int unMinKeyValue = 0, unsigned int unMaxKeyValue = 1000);
     
     std::vector<unsigned int> toArray();
-    void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch = true, std::shared_ptr<BinarySearchTree> bstParent = NULL, unsigned int unLargestParentKey = 0, bool bEverBranchedLeft = false);
-    void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch, std::shared_ptr<BinaryTree> btParent, unsigned int unSmallestParentKey, bool bEverBranchedLeft);
+    void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch = true, std::shared_ptr<BinaryTree> btParent = NULL, unsigned int unLargestParentKey = 0, bool bEverBranchedLeft = false);
     
     bool isBinarySearchTree();
     
