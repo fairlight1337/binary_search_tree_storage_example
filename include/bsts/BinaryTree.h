@@ -20,8 +20,8 @@
 /** \author Jan Winkler */
 
 
-#ifndef __BSTS_BINARY_SEARCH_TREE_H__
-#define __BSTS_BINARY_SEARCH_TREE_H__
+#ifndef __BSTS_BINARY_TREE_H__
+#define __BSTS_BINARY_TREE_H__
 
 
 #include <iostream>
@@ -30,29 +30,39 @@
 #include <sstream>
 #include <vector>
 
-#include <bsts/BinaryTree.h>
-
 
 namespace bsts {
-  class BinarySearchTree : public BinaryTree {
+  class BinaryTree : public std::enable_shared_from_this<BinaryTree> {
   private:
+    unsigned int m_unKey;
+    std::shared_ptr<BinaryTree> m_arrbtChildren[2];
+    
   protected:
+    std::shared_ptr<BinaryTree> child(unsigned int unIndex, bool bCreateIfNonExistant = false);
+    void setChild(unsigned int unIndex, std::shared_ptr<BinaryTree> btSet);
+    
   public:
-    BinarySearchTree(unsigned int unKey = 0);
-    ~BinarySearchTree();
+    BinaryTree(unsigned int unKey = 0);
+    virtual ~BinaryTree();
     
-    static std::shared_ptr<BinarySearchTree> randomTree(std::shared_ptr<BinarySearchTree> bstParent = NULL, int nMaxDepth = 3, unsigned int unMinKeyValue = 0, unsigned int unMaxKeyValue = 1000);
+    std::shared_ptr<BinaryTree> left(bool bCreateIfNonExistant = false);
+    std::shared_ptr<BinaryTree> right(bool bCreateIfNonExistant = false);
     
-    std::vector<unsigned int> toArray();
-    void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch = true, std::shared_ptr<BinarySearchTree> bstParent = NULL, unsigned int unLargestParentKey = 0, bool bEverBranchedLeft = false);
-    void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch, std::shared_ptr<BinaryTree> btParent, unsigned int unSmallestParentKey, bool bEverBranchedLeft);
+    void setLeft(std::shared_ptr<BinaryTree> btSet);
+    void setRight(std::shared_ptr<BinaryTree> btSet);
     
-    bool isBinarySearchTree();
+    void setKey(unsigned int unKey);
+    unsigned int key();
     
-    std::shared_ptr<BinarySearchTree> left(bool bCreate = false);
-    std::shared_ptr<BinarySearchTree> right(bool bCreate = false);
+    std::string print();
+    
+    unsigned int count();
+    unsigned int depth();
+    
+    unsigned int nthLargest(unsigned int unN);
+    unsigned int nthLargest(unsigned int unN, unsigned int& unOffset);
   };
 }
 
 
-#endif /* __BSTS_BINARY_SEARCH_TREE_H__ */
+#endif /* __BSTS_BINARY_TREE_H__ */

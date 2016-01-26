@@ -24,71 +24,10 @@
 
 
 namespace bsts {
-  BinarySearchTree::BinarySearchTree(unsigned int unKey) : m_unKey(unKey) {
+  BinarySearchTree::BinarySearchTree(unsigned int unKey) : BinaryTree(unKey) {
   }
   
   BinarySearchTree::~BinarySearchTree() {
-  }
-  
-  std::shared_ptr<BinarySearchTree> BinarySearchTree::child(unsigned int unIndex, bool bCreateIfNonExistant) {
-    if(unIndex >= 0 && unIndex < 2) {
-      if(!m_arrbstChildren[unIndex] && bCreateIfNonExistant) {
-	m_arrbstChildren[unIndex] = std::make_shared<BinarySearchTree>();
-      }
-    
-      return m_arrbstChildren[unIndex];
-    } else {
-      return NULL;
-    }
-  }
-  
-  std::shared_ptr<BinarySearchTree> BinarySearchTree::left(bool bCreateIfNonExistant) {
-    return this->child(0, bCreateIfNonExistant);
-  }
-  
-  std::shared_ptr<BinarySearchTree> BinarySearchTree::right(bool bCreateIfNonExistant) {
-    return this->child(1, bCreateIfNonExistant);
-  }
-  
-  void BinarySearchTree::setChild(unsigned int unIndex, std::shared_ptr<BinarySearchTree> bstSet) {
-    if(unIndex >= 0 && unIndex < 2) {
-      m_arrbstChildren[unIndex] = bstSet;
-    }
-  }
-  
-  void BinarySearchTree::setLeft(std::shared_ptr<BinarySearchTree> bstSet) {
-    this->setChild(0, bstSet);
-  }
-  
-  void BinarySearchTree::setRight(std::shared_ptr<BinarySearchTree> bstSet) {
-    this->setChild(1, bstSet);
-  }
-  
-  std::string BinarySearchTree::print() {
-    std::string strLeft = (this->left() ? "l=" + this->left()->print() : "");
-    std::string strRight = (this->right() ? "r=" + this->right()->print() : "");
-    std::string strChildren = "";
-    
-    if(strLeft != "") {
-      strChildren = strLeft;
-    }
-    
-    if(strRight != "") {
-      strChildren += (strChildren != "" ? "; " : "") + strRight;
-    }
-    
-    std::stringstream sts;
-    sts << m_unKey;
-    
-    return "(" + sts.str() + (strChildren != "" ? "; " + strChildren : "") + ")";
-  }
-  
-  void BinarySearchTree::setKey(unsigned int unKey) {
-    m_unKey = unKey;
-  }
-  
-  unsigned int BinarySearchTree::key() {
-    return m_unKey;
   }
   
   std::shared_ptr<BinarySearchTree> BinarySearchTree::randomTree(std::shared_ptr<BinarySearchTree> bstParent, int nMaxDepth, unsigned int unMinKeyValue, unsigned int unMaxKeyValue) {
@@ -120,28 +59,24 @@ namespace bsts {
     return bstRandom;
   }
   
-  unsigned int BinarySearchTree::count() {
-    int nLeftCount = (this->left() ? this->left()->count() : 0);
-    int nRightCount = (this->right() ? this->right()->count() : 0);
+  std::shared_ptr<BinarySearchTree> BinarySearchTree::left(bool bCreate) {
+    std::shared_ptr<BinaryTree> btLeft = this->BinaryTree::left(bCreate);
     
-    return nLeftCount + nRightCount + 1;
-  }
-  
-  unsigned int BinarySearchTree::depth() {
-    int nDepth = 0;
-    
-    if(this->left() || this->right()) {
-      int nLeftDepth = (this->left() ? this->left()->depth() : 0);
-      int nRightDepth = (this->right() ? this->right()->depth() : 0);
-      
-      if(nLeftDepth > nRightDepth) {
-	nDepth = nLeftDepth + 1;
-      } else {
-	nDepth = nRightDepth + 1;
-      }
+    if(btLeft) {
+      return std::dynamic_pointer_cast<BinarySearchTree>(btLeft);
     }
     
-    return nDepth;
+    return NULL;
+  }
+  
+  std::shared_ptr<BinarySearchTree> BinarySearchTree::right(bool bCreate) {
+    std::shared_ptr<BinaryTree> btRight = this->BinaryTree::right(bCreate);
+    
+    if(btRight) {
+      return std::dynamic_pointer_cast<BinarySearchTree>(btRight);
+    }
+    
+    return NULL;
   }
   
   std::vector<unsigned int> BinarySearchTree::toArray() {
@@ -159,6 +94,10 @@ namespace bsts {
     }
     
     return vecArray;
+  }
+  
+  void BinarySearchTree::fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch, std::shared_ptr<BinaryTree> btParent, unsigned int unSmallestParentKey, bool bEverBranchedLeft) {
+    this->fromArray(vecArray, bLeftBranch, std::dynamic_pointer_cast<BinarySearchTree>(btParent), unSmallestParentKey, bEverBranchedLeft);
   }
   
   void BinarySearchTree::fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch, std::shared_ptr<BinarySearchTree> bstParent, unsigned int unSmallestParentKey, bool bEverBranchedLeft) {
@@ -199,42 +138,6 @@ namespace bsts {
 	break;
       }
     }
-  }
-  
-  unsigned int BinarySearchTree::nthLargest(unsigned int unN) {
-    unsigned int unOffset = 0;
-    
-    return this->nthLargest(unN, unOffset);
-  }
-  
-  unsigned int BinarySearchTree::nthLargest(unsigned int unN, unsigned int& unOffset) {
-    // TODO(winkler): Buggy; doesn't return the right values.
-    
-    unsigned int unLargest = 0;
-    
-    if(unOffset == unN) {
-      unLargest = this->key();
-    } else {
-      if(this->right()) {
-	unLargest = this->right()->nthLargest(unN, unOffset);
-	unOffset++;
-      }
-      
-      if(unOffset == unN) {
-	unLargest = this->key();
-      } else {
-	if(this->left()) {
-	  unOffset++;
-	  unLargest = this->left()->nthLargest(unN, unOffset);
-	}
-	
-	if(unOffset == unN) {
-	  unLargest = this->key();
-	}
-      }
-    }
-    
-    return unLargest;
   }
   
   bool BinarySearchTree::isBinarySearchTree() {
