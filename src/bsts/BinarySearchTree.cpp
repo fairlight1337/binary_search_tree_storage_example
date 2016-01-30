@@ -145,12 +145,20 @@ namespace bsts {
     if(this->left()) {
       if(!(this->left()->key() < this->key())) {
 	bResult = false;
+      } else {
+	if(!this->left()->isBinarySearchTree()) {
+	  bResult = false;
+	}
       }
     }
     
     if(this->right()) {
       if(!(this->right()->key() > this->key())) {
 	bResult = false;
+      } else {
+	if(!this->right()->isBinarySearchTree()) {
+	  bResult = false;
+	}
       }
     }
     
