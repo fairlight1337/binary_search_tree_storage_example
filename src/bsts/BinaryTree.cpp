@@ -24,7 +24,7 @@
 
 
 namespace bsts {
-  BinaryTree::BinaryTree(unsigned int unKey) : m_unKey(unKey) {
+  BinaryTree::BinaryTree(unsigned int unKey) : Tree(unKey) {
   }
   
   BinaryTree::~BinaryTree() {
@@ -82,17 +82,9 @@ namespace bsts {
     }
     
     std::stringstream sts;
-    sts << m_unKey;
+    sts << this->key();
     
     return "(" + sts.str() + (strChildren != "" ? "; " + strChildren : "") + ")";
-  }
-  
-  void BinaryTree::setKey(unsigned int unKey) {
-    m_unKey = unKey;
-  }
-  
-  unsigned int BinaryTree::key() {
-    return m_unKey;
   }
   
   unsigned int BinaryTree::count() {

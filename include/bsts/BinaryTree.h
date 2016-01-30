@@ -30,11 +30,12 @@
 #include <sstream>
 #include <vector>
 
+#include <bsts/Tree.h>
+
 
 namespace bsts {
-  class BinaryTree : public std::enable_shared_from_this<BinaryTree> {
+  class BinaryTree : public Tree, public std::enable_shared_from_this<BinaryTree> {
   private:
-    unsigned int m_unKey;
     std::shared_ptr<BinaryTree> m_arrbtChildren[2];
     
   protected:
@@ -51,9 +52,6 @@ namespace bsts {
     
     void setLeft(std::shared_ptr<BinaryTree> btSet);
     void setRight(std::shared_ptr<BinaryTree> btSet);
-    
-    void setKey(unsigned int unKey);
-    unsigned int key();
     
     std::string print();
     
