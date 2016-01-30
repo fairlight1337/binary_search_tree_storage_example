@@ -47,6 +47,8 @@ namespace bsts {
     
     std::vector<unsigned int> toArray();
     void fromArray(std::vector<unsigned int> vecArray, bool bLeftBranch = true, std::shared_ptr<BinaryTree> btParent = NULL, unsigned int unLargestParentKey = 0, bool bEverBranchedLeft = false);
+    void fromArrayPreorderTraversal(std::vector<unsigned int> vecArray);
+    bool fromArrayPreorderTraversal(std::vector<unsigned int> vecArray, unsigned int& unCurrentIndex, unsigned int unMin, unsigned int unMax);
     
     bool isBinarySearchTree();
     

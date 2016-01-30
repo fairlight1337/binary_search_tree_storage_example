@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     std::cout << std::endl;
     
     std::shared_ptr<bsts::BinarySearchTree> bstReconstructed = std::make_shared<bsts::BinarySearchTree>(0);
-    bstReconstructed->fromArray(vecArray);
+    bstReconstructed->fromArrayPreorderTraversal(vecArray);
     
     std::cout << "Reconstructed tree:" << std::endl;
     std::cout << bstReconstructed->print() << std::endl;

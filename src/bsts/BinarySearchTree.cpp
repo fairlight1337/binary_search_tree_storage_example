@@ -139,6 +139,47 @@ namespace bsts {
     }
   }
   
+  void BinarySearchTree::fromArrayPreorderTraversal(std::vector<unsigned int> vecArray) {
+    if(vecArray.size() > 0) {
+      unsigned int unCurrentIndex = 0;
+      unsigned int unLargest = vecArray[0];
+      
+      for(unsigned int unEntry : vecArray) {
+	if(unEntry > unLargest) {
+	  unLargest = unEntry;
+	}
+      }
+      
+      this->fromArrayPreorderTraversal(vecArray, unCurrentIndex, 0, unLargest + 1);
+    }
+  }
+  
+  bool BinarySearchTree::fromArrayPreorderTraversal(std::vector<unsigned int> vecArray, unsigned int& unCurrentIndex, unsigned int unMin, unsigned int unMax) {
+    bool bResult = false;
+    
+    if(unCurrentIndex < vecArray.size()) {
+      unsigned int unVal = vecArray[unCurrentIndex];
+      
+      if(unVal > unMin && unVal < unMax) {
+	bResult = true;
+	this->setKey(unVal);
+	unCurrentIndex++;
+	
+	if(unCurrentIndex < vecArray.size()) {
+	  if(!this->left(true)->fromArrayPreorderTraversal(vecArray, unCurrentIndex, unMin, unVal)) {
+	    this->setLeft(NULL);
+	  }
+	  
+	  if(!this->right(true)->fromArrayPreorderTraversal(vecArray, unCurrentIndex, unVal, unMax)) {
+	    this->setRight(NULL);
+	  }
+	}
+      }
+    }
+    
+    return bResult;
+  }
+  
   bool BinarySearchTree::isBinarySearchTree() {
     bool bResult = true;
     
