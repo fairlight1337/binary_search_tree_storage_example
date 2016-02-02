@@ -29,12 +29,27 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <queue>
+#include <map>
 
 #include <bsts/Tree.h>
 
 
 namespace bsts {
   class BinaryTree : public Tree, public std::enable_shared_from_this<BinaryTree> {
+  public:
+    typedef enum {
+      DepthFirst = 0,
+      BreadthFirst
+    } TraversalType;
+    
+    typedef enum {
+      NotApplicable = 0,
+      PreOrder,
+      InOrder,
+      PostOrder
+    } TraversalOrder;
+    
   private:
     std::shared_ptr<BinaryTree> m_arrbtChildren[2];
     
@@ -62,6 +77,8 @@ namespace bsts {
     unsigned int nthLargest(unsigned int unN, unsigned int& unOffset);
     
     bool equal(std::shared_ptr<BinaryTree> btCompare);
+    
+    void traverse(TraversalType ttTraversal, TraversalOrder toOrder, std::function<void(std::shared_ptr<BinaryTree>)> fncProcess);
   };
 }
 

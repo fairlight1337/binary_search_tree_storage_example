@@ -84,6 +84,12 @@ int main(int argc, char** argv) {
     std::cout << unNthLargestN << (unNthLargestN == 1 ? "st" : (unNthLargestN == 2 ? "nd" : (unNthLargestN == 3 ? "rd" : "th"))) << " largest key: " << bstReconstructed->nthLargest(unNthLargestN - 1) << std::endl;
     
     std::cout << "Is a binary search tree: " << (bstReconstructed->isBinarySearchTree() ? "yes" : "no") << std::endl;
+    
+    std::cout << "Traversing breadth-first:" << std::endl;
+    bstReconstructed->traverse(bsts::BinaryTree::BreadthFirst, bsts::BinaryTree::NotApplicable, [](std::shared_ptr<bsts::BinaryTree> btTree) { std::cout << btTree->key() << std::endl; });
+    
+    std::cout << "Traversing depth-first (preorder):" << std::endl;
+    bstReconstructed->traverse(bsts::BinaryTree::DepthFirst, bsts::BinaryTree::PreOrder, [](std::shared_ptr<bsts::BinaryTree> btTree) { std::cout << btTree->key() << std::endl; });
   } else {
     std::cerr << "Usage: " << argv[0] << " [max depth (integer)]" << std::endl;
     nReturnvalue = EXIT_FAILURE;

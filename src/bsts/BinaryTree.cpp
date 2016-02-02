@@ -161,4 +161,90 @@ namespace bsts {
     
     return bEqual;
   }
+  
+  void BinaryTree::traverse(TraversalType ttTraversal, TraversalOrder toOrder, std::function<void(std::shared_ptr<BinaryTree>)> fncProcess) {
+    switch(ttTraversal) {
+    case DepthFirst: {
+      switch(toOrder) {
+      case PreOrder: {
+	fncProcess(this->shared_from_this());
+	
+	if(this->left()) {
+	  this->left()->traverse(ttTraversal, toOrder, fncProcess);
+	}
+	
+	if(this->right()) {
+	  this->right()->traverse(ttTraversal, toOrder, fncProcess);
+	}
+      } break;
+	
+      case InOrder: {
+	if(this->left()) {
+	  this->left()->traverse(ttTraversal, toOrder, fncProcess);
+	}
+	
+	fncProcess(this->shared_from_this());
+	
+	if(this->right()) {
+	  this->right()->traverse(ttTraversal, toOrder, fncProcess);
+	}
+      } break;
+	
+      case PostOrder: {
+	if(this->left()) {
+	  this->left()->traverse(ttTraversal, toOrder, fncProcess);
+	}
+	
+	if(this->right()) {
+	  this->right()->traverse(ttTraversal, toOrder, fncProcess);
+	}
+	
+	fncProcess(this->shared_from_this());
+      } break;
+      }
+    } break;
+      
+    case BreadthFirst: {
+      typedef struct {
+	int nDistance;
+	std::shared_ptr<BinaryTree> btParent;
+      } Node;
+      
+      std::map<std::shared_ptr<BinaryTree>, Node> mapNodes;
+      mapNodes[this->shared_from_this()] = {0, NULL};
+      
+      std::queue<std::shared_ptr<BinaryTree>> quQ;
+      quQ.push(this->shared_from_this()); // Add root
+      
+      while(quQ.size() > 0) {
+	std::shared_ptr<BinaryTree> btCurrent = quQ.front();
+	quQ.pop();
+	
+	fncProcess(btCurrent);
+	
+	std::vector<std::shared_ptr<BinaryTree>> vecAdjacentNodes;
+	if(btCurrent->left()) {
+	  vecAdjacentNodes.push_back(btCurrent->left());
+	}
+	
+	if(btCurrent->right()) {
+	  vecAdjacentNodes.push_back(btCurrent->right());
+	}
+	
+	for(std::shared_ptr<BinaryTree> btAdjacent : vecAdjacentNodes) {
+	  if(mapNodes.find(btAdjacent) == mapNodes.end()) {
+	    mapNodes[btAdjacent].nDistance = mapNodes[this->shared_from_this()].nDistance + 1;
+	    mapNodes[btAdjacent].btParent = this->shared_from_this();
+	    
+	    quQ.push(btAdjacent);
+	  }
+	}
+      }
+    } break;
+      
+    default: {
+      std::cerr << "Error: Unknown traversal type ('" << (int)ttTraversal << "')" << std::endl;
+    } break;
+    }
+  }
 }
