@@ -201,6 +201,10 @@ namespace bsts {
 	
 	fncProcess(this->shared_from_this());
       } break;
+	
+      default: {
+	std::cerr << "Error: Unknown traversal order ('" << (int)toOrder << "')" << std::endl;
+      } break;
       }
     } break;
       
