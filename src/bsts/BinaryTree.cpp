@@ -209,23 +209,27 @@ namespace bsts {
     } break;
       
     case BreadthFirst: {
-      std::vector<std::shared_ptr<BinaryTree>> vecSeen;
+      if(toOrder == LevelOrder) {
+	std::vector<std::shared_ptr<BinaryTree>> vecSeen;
       
-      std::queue<std::shared_ptr<BinaryTree>> quQ;
-      quQ.push(this->shared_from_this()); // Add root
+	std::queue<std::shared_ptr<BinaryTree>> quQ;
+	quQ.push(this->shared_from_this()); // Add root
       
-      while(quQ.size() > 0) {
-	std::shared_ptr<BinaryTree> btCurrent = quQ.front();
-	quQ.pop();
+	while(quQ.size() > 0) {
+	  std::shared_ptr<BinaryTree> btCurrent = quQ.front();
+	  quQ.pop();
 	
-	fncProcess(btCurrent);
+	  fncProcess(btCurrent);
 	
-	for(std::shared_ptr<BinaryTree> btAdjacent : std::vector<std::shared_ptr<BinaryTree>>({btCurrent->left(), btCurrent->right()})) {
-	  if(btAdjacent && std::find(vecSeen.begin(), vecSeen.end(), btAdjacent) == vecSeen.end()) {
-	    vecSeen.push_back(btAdjacent);
-	    quQ.push(btAdjacent);
+	  for(std::shared_ptr<BinaryTree> btAdjacent : std::vector<std::shared_ptr<BinaryTree>>({btCurrent->left(), btCurrent->right()})) {
+	    if(btAdjacent && std::find(vecSeen.begin(), vecSeen.end(), btAdjacent) == vecSeen.end()) {
+	      vecSeen.push_back(btAdjacent);
+	      quQ.push(btAdjacent);
+	    }
 	  }
 	}
+      } else {
+	std::cerr << "Error: Unknown traversal order ('" << (int)toOrder << "')" << std::endl;
       }
     } break;
       

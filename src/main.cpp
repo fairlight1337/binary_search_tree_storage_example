@@ -85,8 +85,8 @@ int main(int argc, char** argv) {
     
     std::cout << "Is a binary search tree: " << (bstReconstructed->isBinarySearchTree() ? "yes" : "no") << std::endl;
     
-    std::cout << "Traversing breadth-first:" << std::endl;
-    bstReconstructed->traverse(bsts::BinaryTree::BreadthFirst, bsts::BinaryTree::NotApplicable, [](std::shared_ptr<bsts::BinaryTree> btTree) { std::cout << btTree->key() << std::endl; });
+    std::cout << "Traversing breadth-first (levelorder):" << std::endl;
+    bstReconstructed->traverse(bsts::BinaryTree::BreadthFirst, bsts::BinaryTree::LevelOrder, [](std::shared_ptr<bsts::BinaryTree> btTree) { std::cout << btTree->key() << std::endl; });
     
     std::cout << "Traversing depth-first (preorder):" << std::endl;
     bstReconstructed->traverse(bsts::BinaryTree::DepthFirst, bsts::BinaryTree::PreOrder, [](std::shared_ptr<bsts::BinaryTree> btTree) { std::cout << btTree->key() << std::endl; });

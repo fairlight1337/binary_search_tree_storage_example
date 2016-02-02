@@ -45,7 +45,7 @@ namespace bsts {
     } TraversalType;
     
     typedef enum {
-      NotApplicable = 0,
+      LevelOrder = 0,
       PreOrder,
       InOrder,
       PostOrder
