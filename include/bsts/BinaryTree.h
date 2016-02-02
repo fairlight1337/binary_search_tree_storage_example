@@ -31,6 +31,7 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <algorithm>
 
 #include <bsts/Tree.h>
 

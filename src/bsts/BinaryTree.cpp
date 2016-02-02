@@ -205,13 +205,7 @@ namespace bsts {
     } break;
       
     case BreadthFirst: {
-      typedef struct {
-	int nDistance;
-	std::shared_ptr<BinaryTree> btParent;
-      } Node;
-      
-      std::map<std::shared_ptr<BinaryTree>, Node> mapNodes;
-      mapNodes[this->shared_from_this()] = {0, NULL};
+      std::vector<std::shared_ptr<BinaryTree>> vecSeen;
       
       std::queue<std::shared_ptr<BinaryTree>> quQ;
       quQ.push(this->shared_from_this()); // Add root
@@ -222,20 +216,9 @@ namespace bsts {
 	
 	fncProcess(btCurrent);
 	
-	std::vector<std::shared_ptr<BinaryTree>> vecAdjacentNodes;
-	if(btCurrent->left()) {
-	  vecAdjacentNodes.push_back(btCurrent->left());
-	}
-	
-	if(btCurrent->right()) {
-	  vecAdjacentNodes.push_back(btCurrent->right());
-	}
-	
-	for(std::shared_ptr<BinaryTree> btAdjacent : vecAdjacentNodes) {
-	  if(mapNodes.find(btAdjacent) == mapNodes.end()) {
-	    mapNodes[btAdjacent].nDistance = mapNodes[this->shared_from_this()].nDistance + 1;
-	    mapNodes[btAdjacent].btParent = this->shared_from_this();
-	    
+	for(std::shared_ptr<BinaryTree> btAdjacent : std::vector<std::shared_ptr<BinaryTree>>({btCurrent->left(), btCurrent->right()})) {
+	  if(btAdjacent && std::find(vecSeen.begin(), vecSeen.end(), btAdjacent) == vecSeen.end()) {
+	    vecSeen.push_back(btAdjacent);
 	    quQ.push(btAdjacent);
 	  }
 	}
